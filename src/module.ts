@@ -52,9 +52,6 @@ export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig
       description: 'Select fields to group by',
       editor: FieldSelectEditor,
       category: ['Dimensions'],
-      settings: {
-        // filterByType: FieldType.string,
-      },
     })
     .addSelect({
       path: 'padding',
