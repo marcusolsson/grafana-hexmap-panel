@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 79 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g transform="matrix(1,0,0,1,-609.777,-288.654)">
+        <g transform="matrix(0.445122,0,0,0.445122,381.994,242.827)">
+            <path d="M558.333,180.101L600.442,204.413L600.442,253.036L558.333,277.348L516.224,253.036L516.224,204.413L558.333,180.101Z" style="fill:none;stroke:rgb(132,175,241);stroke-width:8.99px;"/>
+        </g>
+        <g transform="matrix(0.301701,0,0,0.301701,462.071,275.631)">
+            <path d="M558.333,180.101L600.442,204.413L600.442,253.036L558.333,277.348L516.224,253.036L516.224,204.413L558.333,180.101Z" style="fill:url(#_Linear1);"/>
+        </g>
+        <g transform="matrix(0.301701,0,0,0.301701,480.815,243.291)">
+            <path d="M558.333,180.101L600.442,204.413L600.442,253.036L558.333,277.348L516.224,253.036L516.224,204.413L558.333,180.101Z" style="fill:rgb(56,101,171);"/>
+        </g>
+        <g transform="matrix(0.301701,0,0,0.301701,499.558,275.631)">
+            <path d="M558.333,180.101L600.442,204.413L600.442,253.036L558.333,277.348L516.224,253.036L516.224,204.413L558.333,180.101Z" style="fill:rgb(56,101,171);"/>
+        </g>
+        <g transform="matrix(0.445122,0,0,0.445122,419.481,242.827)">
+            <path d="M558.333,180.101L600.442,204.413L600.442,253.036L558.333,277.348L516.224,253.036L516.224,204.413L558.333,180.101Z" style="fill:none;stroke:rgb(132,175,241);stroke-width:8.99px;"/>
+        </g>
+        <g transform="matrix(0.445122,0,0,0.445122,400.738,210.487)">
+            <path d="M558.333,180.101L600.442,204.413L600.442,253.036L558.333,277.348L516.224,253.036L516.224,204.413L558.333,180.101Z" style="fill:none;stroke:rgb(132,175,241);stroke-width:8.99px;"/>
+        </g>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(97.2467,0,0,97.2467,509.709,228.725)"><stop offset="0" style="stop-color:rgb(242,204,12);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(255,152,48);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>

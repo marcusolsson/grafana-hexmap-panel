@@ -1,0 +1,35 @@
+{
+  "type": "panel",
+  "name": "Hexmap",
+  "id": "marcusolsson-hexmap-panel",
+  "info": {
+    "description": "Panel for hexagonal tiling of data",
+    "author": {
+      "name": "Marcus Olsson",
+      "url": "https://github.com/marcusolsson"
+    },
+    "keywords": ["hostmap", "hexagon", "hex", "map"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/marcusolsson/grafana-hexmap-panel"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/marcusolsson/grafana-hexmap-panel/blob/master/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
+  },
+  "dependencies": {
+    "grafanaVersion": "7.0.x",
+    "grafanaDependency": ">=7.0.0",
+    "plugins": []
+  }
+}
