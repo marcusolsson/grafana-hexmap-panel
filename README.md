@@ -8,3 +8,5 @@
 A [Grafana](https://grafana.com) panel plugin for hexagonal tiling of data.
 
 **Important:** This plugin is still under development and is **not fit for production use**. Please use it and [submit issues](https://github.com/marcusolsson/grafana-hexmap-panel/issues/new)
+
+![Screenshot](https://github.com/marcusolsson/grafana-hexmap-panel/raw/master/src/img/screenshot.png)
