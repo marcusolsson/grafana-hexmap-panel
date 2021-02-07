@@ -3,7 +3,7 @@ import { SimpleOptions } from './types';
 import { HexmapPanel } from './HexmapPanel';
 import { FieldSelectEditor } from 'FieldSelectEditor';
 
-export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig().setPanelOptions(builder => {
+export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig().setPanelOptions((builder) => {
   return builder
     .addCustomEditor({
       id: 'valueFieldName',
@@ -39,7 +39,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig
       name: 'Size by',
       description: 'Defaults to the value field.',
       category: ['Dimensions'],
-      showIf: config => config.enableSizeByField,
+      showIf: (config) => config.enableSizeByField,
       editor: FieldSelectEditor,
       settings: {
         filterByType: FieldType.number,
@@ -60,7 +60,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig
       settings: {
         options: Array.from({ length: 10 })
           .map((_, i) => i / 10)
-          .map(_ => ({ label: `${_ * 100}%`, value: _ })),
+          .map((_) => ({ label: `${_ * 100}%`, value: _ })),
       },
       defaultValue: 0.1,
     })

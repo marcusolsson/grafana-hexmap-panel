@@ -3,7 +3,7 @@ import { axial2Pixel, cube2Oddr } from './math';
 import { StyledHex } from './types';
 import { Hexagon } from './Hexagon';
 import { DataFrame, Field, getFieldDisplayName } from '@grafana/data';
-import { ContextMenu, ContextMenuGroup, ContextMenuItem } from '@grafana/ui';
+import { ContextMenu, MenuItemsGroup, MenuItem } from '@grafana/ui';
 import { css } from 'emotion';
 
 interface Props {
@@ -46,7 +46,7 @@ export const HexagonGroup = React.memo(
     // State for context menu.
     const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
     const [contextMenuLabel, setContextMenuLabel] = useState<React.ReactNode | string>('');
-    const [contextMenuGroups, setContextMenuGroups] = useState<ContextMenuGroup[]>([]);
+    const [contextMenuGroups, setContextMenuGroups] = useState<MenuItemsGroup[]>([]);
     const [showContextMenu, setShowContextMenu] = useState(false);
 
     const labelHeight = 20;
@@ -128,12 +128,12 @@ export const HexagonGroup = React.memo(
             const valueDisplay = _.valueField.display!(_.valueField.values.get(_.valueRowIndex));
             const colorDisplay = _.colorField.display!(_.colorField.values.get(_.valueRowIndex));
 
-            const valueLinks = _.valueField.getLinks!({ valueRowIndex: _.valueRowIndex }).map<ContextMenuItem>(link => {
+            const valueLinks = _.valueField.getLinks!({ valueRowIndex: _.valueRowIndex }).map<MenuItem>((link) => {
               return {
                 label: link.title,
                 url: link.href,
                 target: link.target,
-                icon: `${link.target === '_self' ? 'link' : 'external-link-alt'}`,
+                icon: link.target === '_self' ? 'link' : 'external-link-alt',
                 onClick: link.onClick,
               };
             });
@@ -148,14 +148,15 @@ export const HexagonGroup = React.memo(
             return (
               <g
                 key={k}
-                transform={`translate(${point.x + (optimized.rows > 1 ? 2 * optimized.r : optimized.r)}, ${point.y +
-                  optimized.R})`}
+                transform={`translate(${point.x + (optimized.rows > 1 ? 2 * optimized.r : optimized.r)}, ${
+                  point.y + optimized.R
+                })`}
               >
                 {background ? (
                   <Hexagon circumradius={optimized.R} color={'rgba(255,255,255,0.05)'} animate={false} />
                 ) : null}
                 <Hexagon
-                  onClick={e => {
+                  onClick={(e) => {
                     setContextMenuPos({ x: e.clientX, y: e.clientY });
                     setShowContextMenu(true);
                     setContextMenuLabel(
@@ -220,7 +221,7 @@ const hexesFit = (
 const renderContextMenu = (
   pos: { x: number; y: number },
   label: React.ReactNode | string,
-  items: ContextMenuGroup[],
+  items: MenuItemsGroup[],
   onClose: () => void
 ) => {
   const contextContentProps = {

@@ -20,13 +20,13 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
   const frame = data.series[0];
 
   // No field is set.
-  const valueField = frame.fields.find(f => f.name === valueFieldName);
+  const valueField = frame.fields.find((f) => f.name === valueFieldName);
   if (!valueField) {
     return <p>Select a value field</p>;
   }
 
-  const sizeField = frame.fields.find(f => f.name === sizeByField) ?? valueField;
-  const colorField = frame.fields.find(f => f.name === colorByField) ?? valueField;
+  const sizeField = frame.fields.find((f) => f.name === sizeByField) ?? valueField;
+  const colorField = frame.fields.find((f) => f.name === colorByField) ?? valueField;
 
   const margin = 0;
 
@@ -35,13 +35,13 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
 
   let groupedData: Group = {};
   if (groupByField) {
-    const groupedField = frame.fields.find(f => f.name === groupByField);
+    const groupedField = frame.fields.find((f) => f.name === groupByField);
 
     const init: Group = {};
     groupedData = groupedField!.values
       .toArray()
       .map((value, index) => ({ value, index }))
-      .map(_ => {
+      .map((_) => {
         return _;
       })
       .reduce((acc: Group, curr: { value: string; index: number }) => {
@@ -112,7 +112,10 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
           {groupedData
             ? Object.entries(groupedData).map(([key, value], i) => {
                 return (
-                  <g transform={`translate(${(i % numColumns) * subWidth}, ${Math.floor(i / numColumns) * subHeight})`}>
+                  <g
+                    key={i}
+                    transform={`translate(${(i % numColumns) * subWidth}, ${Math.floor(i / numColumns) * subHeight})`}
+                  >
                     <HexagonGroup
                       label={key}
                       padding={padding}

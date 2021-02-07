@@ -15,7 +15,7 @@ export const Hexagon = React.memo(({ onClick, circumradius, color, animate: igno
   const deg30 = Math.PI / 6;
 
   const angles = Array.from({ length: 6 }).map((_, i) => i * deg60 + deg30);
-  const values = angles.map(_ => ({ x: R * Math.cos(_), y: R * Math.sin(_) }));
+  const values = angles.map((_) => ({ x: R * Math.cos(_), y: R * Math.sin(_) }));
 
   const hoverStyle = css`
     transform: scale(1);
@@ -36,14 +36,14 @@ export const Hexagon = React.memo(({ onClick, circumradius, color, animate: igno
 
   return (
     <polygon
-      points={values.map(_ => `${_.x.toFixed(5)},${_.y.toFixed(5)}`).join(' ')}
+      points={values.map((_) => `${_.x.toFixed(5)},${_.y.toFixed(5)}`).join(' ')}
       className={cx(
         css`
           fill: ${color};
         `,
         { [hoverStyle]: ignoreHover }
       )}
-      onClick={e => {
+      onClick={(e) => {
         if (onClick) {
           onClick(e);
         }
@@ -51,3 +51,4 @@ export const Hexagon = React.memo(({ onClick, circumradius, color, animate: igno
     />
   );
 });
+Hexagon.displayName = 'Hexagon';
