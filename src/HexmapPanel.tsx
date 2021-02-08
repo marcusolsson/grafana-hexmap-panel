@@ -19,7 +19,6 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const frame = data.series[0];
 
-  // No field is set.
   const valueField = valueFieldName
     ? frame.fields.find((f) => f.name === valueFieldName)
     : frame.fields.find((f) => f.type === FieldType.number);
