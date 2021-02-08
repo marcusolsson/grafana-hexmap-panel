@@ -1,5 +1,5 @@
 import React from 'react';
-import { PanelProps } from '@grafana/data';
+import { FieldType, PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
 import { css, cx } from 'emotion';
 import { stylesFactory } from '@grafana/ui';
@@ -20,7 +20,10 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
   const frame = data.series[0];
 
   // No field is set.
-  const valueField = frame.fields.find((f) => f.name === valueFieldName);
+  const valueField = valueFieldName
+    ? frame.fields.find((f) => f.name === valueFieldName)
+    : frame.fields.find((f) => f.type === FieldType.number);
+
   if (!valueField) {
     return <p>Select a value field</p>;
   }

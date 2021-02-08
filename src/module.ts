@@ -13,7 +13,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig
       category: ['Dimensions'],
       editor: FieldSelectEditor,
       settings: {
-        filterByType: FieldType.number,
+        filterByType: [FieldType.number],
       },
     })
     .addCustomEditor({
@@ -24,7 +24,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig
       editor: FieldSelectEditor,
       category: ['Dimensions'],
       settings: {
-        filterByType: FieldType.number,
+        filterByType: [FieldType.number],
       },
     })
     .addBooleanSwitch({
@@ -42,7 +42,7 @@ export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig
       showIf: (config) => config.enableSizeByField,
       editor: FieldSelectEditor,
       settings: {
-        filterByType: FieldType.number,
+        filterByType: [FieldType.number],
       },
     })
     .addCustomEditor({

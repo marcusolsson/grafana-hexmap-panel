@@ -4,7 +4,7 @@ export interface SimpleOptions {
   enableSizeByField: boolean;
   padding: number;
   background: boolean;
-  valueFieldName: string;
+  valueFieldName?: string;
   sizeByField?: string;
   colorByField?: string;
   groupByField?: string;
