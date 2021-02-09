@@ -1,7 +1,7 @@
 import { FieldType, PanelPlugin } from '@grafana/data';
 import { SimpleOptions } from './types';
 import { HexmapPanel } from './HexmapPanel';
-import { FieldSelectEditor } from 'FieldSelectEditor';
+import { FieldSelectEditor } from 'grafana-plugin-support';
 
 export const plugin = new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig().setPanelOptions((builder) => {
   return builder

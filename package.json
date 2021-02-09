@@ -29,5 +29,8 @@
   },
   "engines": {
     "node": ">=14"
+  },
+  "dependencies": {
+    "grafana-plugin-support": "^0.1.0"
   }
 }
