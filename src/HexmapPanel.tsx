@@ -5,9 +5,15 @@ import { css, cx } from 'emotion';
 import { stylesFactory } from '@grafana/ui';
 
 import { HexagonGroup } from './HexagonGroup';
+import { PanelWizard } from 'grafana-plugin-support';
 
 type Group = {
   [value: string]: { indexes: number[]; next?: Group };
+};
+
+const usage = {
+  schema: [{ type: FieldType.number, description: 'Value' }],
+  url: 'https://github.com/marcusolsson/grafana-hexmap-panel',
 };
 
 interface Props extends PanelProps<SimpleOptions> {}
@@ -17,6 +23,10 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const { valueFieldName, sizeByField, colorByField, groupByField } = options;
 
+  if (data.series.length === 0) {
+    return <PanelWizard {...usage} />;
+  }
+
   const frame = data.series[0];
 
   const valueField = valueFieldName
@@ -24,7 +34,7 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
     : frame.fields.find((f) => f.type === FieldType.number);
 
   if (!valueField) {
-    return <p>Select a value field</p>;
+    return <PanelWizard {...usage} fields={frame.fields} />;
   }
 
   const sizeField = frame.fields.find((f) => f.name === sizeByField) ?? valueField;
