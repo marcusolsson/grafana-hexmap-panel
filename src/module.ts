@@ -22,26 +22,19 @@ export const plugin = getPanelPluginOrFallback(
         id: 'colorByField',
         path: 'colorByField',
         name: 'Color by',
-        description: 'Defaults to the value field. Set the color scheme under the Fields tab',
+        description: 'Field to use for color. Defaults to the value field. Set the color scheme under the Fields tab.',
         editor: FieldSelectEditor,
         category: ['Dimensions'],
         settings: {
           filterByType: [FieldType.number],
         },
       })
-      .addBooleanSwitch({
-        path: 'enableSizeByField',
-        name: 'Size by field',
-        defaultValue: false,
-        category: ['Dimensions'],
-      })
       .addCustomEditor({
         id: 'sizeByField',
         path: 'sizeByField',
         name: 'Size by',
-        description: 'Defaults to the value field.',
+        description: 'Field to use for size. If empty, all hexagons will be the same size.',
         category: ['Dimensions'],
-        showIf: (config) => config.enableSizeByField,
         editor: FieldSelectEditor,
         settings: {
           filterByType: [FieldType.number],
@@ -51,7 +44,7 @@ export const plugin = getPanelPluginOrFallback(
         id: 'groupByField',
         path: 'groupByField',
         name: 'Group by',
-        description: 'Select fields to group by',
+        description: 'Field to group by. Select fields to group by.',
         editor: FieldSelectEditor,
         category: ['Dimensions'],
       })

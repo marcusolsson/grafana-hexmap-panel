@@ -1,7 +1,6 @@
 import { DataFrame, Field } from '@grafana/data';
 
 export interface SimpleOptions {
-  enableSizeByField: boolean;
   padding: number;
   background: boolean;
   valueFieldName?: string;
@@ -15,7 +14,7 @@ export interface StyledHex {
   shape: Cube;
   // size: number;
   valueField: Field<number>;
-  sizeField: Field<number>;
+  sizeField?: Field<number>;
   colorField: Field<number>;
   frame: DataFrame;
   valueRowIndex: number;

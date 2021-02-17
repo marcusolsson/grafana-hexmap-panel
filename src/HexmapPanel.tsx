@@ -19,7 +19,7 @@ const usage = {
 interface Props extends PanelProps<SimpleOptions> {}
 
 export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) => {
-  const { enableSizeByField, padding, background, guides } = options;
+  const { padding, background, guides } = options;
 
   const { valueFieldName, sizeByField, colorByField, groupByField } = options;
 
@@ -37,7 +37,7 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
     return <PanelWizard {...usage} fields={frame.fields} />;
   }
 
-  const sizeField = frame.fields.find((f) => f.name === sizeByField) ?? valueField;
+  const sizeField = frame.fields.find((f) => f.name === sizeByField);
   const colorField = frame.fields.find((f) => f.name === colorByField) ?? valueField;
 
   const margin = 0;
@@ -132,7 +132,6 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
                       label={key}
                       padding={padding}
                       frame={data.series[0]}
-                      enableSizeByField={enableSizeByField}
                       background={background}
                       width={subWidth}
                       height={subHeight}

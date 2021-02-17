@@ -20,8 +20,7 @@ interface Props {
   frame: DataFrame;
   valueField: Field<number>;
   colorField: Field<number>;
-  sizeField: Field<number>;
-  enableSizeByField: boolean;
+  sizeField?: Field<number>;
 }
 
 const normalize = (size: number, min: number, max: number) => {
@@ -29,20 +28,7 @@ const normalize = (size: number, min: number, max: number) => {
 };
 
 export const HexagonGroup = React.memo(
-  ({
-    padding,
-    frame,
-    width,
-    height,
-    background,
-    enableSizeByField,
-    valueField,
-    sizeField,
-    colorField,
-    indexes,
-    label,
-    guides,
-  }: Props) => {
+  ({ padding, frame, width, height, background, valueField, sizeField, colorField, indexes, label, guides }: Props) => {
     // State for context menu.
     const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
     const [contextMenuLabel, setContextMenuLabel] = useState<React.ReactNode | string>('');
@@ -139,7 +125,7 @@ export const HexagonGroup = React.memo(
             });
 
             let factor = 1;
-            if (enableSizeByField) {
+            if (sizeField) {
               const min = sizeField.config.min!;
               const max = sizeField.config.max!;
               factor = normalize(sizeField.values.get(_.valueRowIndex), min, max);
@@ -188,7 +174,6 @@ const optimize = (
   for (let r = 1; r < w; r += 0.01) {
     const result = hexesFit(r, w, h, N);
     if (!result.valid) {
-      console.log(N, result);
       break;
     }
     best = { ...result, r: r };

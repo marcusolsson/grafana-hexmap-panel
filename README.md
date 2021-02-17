@@ -12,3 +12,18 @@ A [Grafana](https://grafana.com) panel plugin for hexagonal tiling of data.
 **Important:** This plugin is still under development and is **not fit for production use**. Please use it and [submit issues](https://github.com/marcusolsson/grafana-hexmap-panel/issues/new) to improve it.
 
 ![Screenshot](https://github.com/marcusolsson/grafana-hexmap-panel/raw/main/src/img/screenshot.png)
+
+## Configuration
+
+This section lists the available configuration options.
+
+### Panel options
+
+#### Dimensions
+
+| Option | Description |
+|--------|-------------|
+| _Value_ | Defaults to the first numeric field. |
+| _Color by_ | Field to use for color. Defaults to the value field. Set the color scheme under the Fields tab. |
+| _Size by_ | Field to use for size. If empty, all hexagons will be the same size. |
+| _Group by_ | Field to group by. |
