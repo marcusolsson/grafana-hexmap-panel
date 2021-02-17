@@ -5,6 +5,7 @@ import { Hexagon } from './Hexagon';
 import { DataFrame, Field, getFieldDisplayName } from '@grafana/data';
 import { ContextMenu, MenuItemsGroup, MenuItem, useTheme } from '@grafana/ui';
 import { css } from 'emotion';
+import { fieldConfigWithMinMaxCompat, measureText } from 'grafana-plugin-support';
 
 interface Props {
   width: number;
@@ -90,7 +91,7 @@ export const HexagonGroup = React.memo(
             fill: ${theme.colors.text};
             font-size: ${theme.typography.size.lg};
           `}
-          x={chartWidth / 2 - measureText(label) / 2}
+          x={chartWidth / 2 - (measureText(label, theme.typography.size.lg)?.width ?? 0) / 2}
           y={labelHeight - labelHeight / 4}
         >
           {label}
@@ -130,9 +131,8 @@ export const HexagonGroup = React.memo(
 
             let factor = 1;
             if (sizeField) {
-              const min = sizeField.config.min!;
-              const max = sizeField.config.max!;
-              factor = normalize(sizeField.values.get(_.valueRowIndex), min, max);
+              const config = fieldConfigWithMinMaxCompat(sizeField);
+              factor = normalize(sizeField.values.get(_.valueRowIndex), config.min!, config.max!);
             }
 
             return (
@@ -222,14 +222,4 @@ const renderContextMenu = (
   };
 
   return <ContextMenu {...contextContentProps} />;
-};
-
-const measureText = (text: string): number => {
-  var canvas = document.createElement('canvas');
-  var ctx = canvas.getContext('2d');
-  if (ctx) {
-    ctx.font = '14px Arial';
-    return ctx.measureText(text).width;
-  }
-  return 0;
 };
