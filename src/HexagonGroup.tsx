@@ -3,7 +3,7 @@ import { axial2Pixel, cube2Oddr } from './math';
 import { StyledHex } from './types';
 import { Hexagon } from './Hexagon';
 import { DataFrame, Field, getFieldDisplayName } from '@grafana/data';
-import { ContextMenu, MenuItemsGroup, MenuItem } from '@grafana/ui';
+import { ContextMenu, MenuItemsGroup, MenuItem, useTheme } from '@grafana/ui';
 import { css } from 'emotion';
 
 interface Props {
@@ -35,7 +35,9 @@ export const HexagonGroup = React.memo(
     const [contextMenuGroups, setContextMenuGroups] = useState<MenuItemsGroup[]>([]);
     const [showContextMenu, setShowContextMenu] = useState(false);
 
-    const labelHeight = 20;
+    const theme = useTheme();
+
+    const labelHeight = 25;
 
     const margin = 10;
     const chartWidth = width - margin * 2;
@@ -47,7 +49,8 @@ export const HexagonGroup = React.memo(
       return (
         <text
           className={css`
-            fill: white;
+            fill: ${theme.colors.text};
+            font-size: ${theme.typography.size.lg};
           `}
         >
           Unable to display
@@ -84,7 +87,8 @@ export const HexagonGroup = React.memo(
 
         <text
           className={css`
-            fill: white;
+            fill: ${theme.colors.text};
+            font-size: ${theme.typography.size.lg};
           `}
           x={chartWidth / 2 - measureText(label) / 2}
           y={labelHeight - labelHeight / 4}
