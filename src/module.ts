@@ -48,6 +48,17 @@ export const plugin = getPanelPluginOrFallback(
         editor: FieldSelectEditor,
         category: ['Dimensions'],
       })
+      .addCustomEditor({
+        id: 'labelFields',
+        path: 'labelFields',
+        name: 'Additional labels',
+        description: 'Fields to use as labels in the tooltip.',
+        category: ['Dimensions'],
+        editor: FieldSelectEditor,
+        settings: {
+          multi: true,
+        },
+      })
       .addSelect({
         path: 'padding',
         name: 'Padding',

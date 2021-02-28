@@ -21,6 +21,10 @@
     "email": "marcus.olsson@hey.com",
     "url": "https://marcus.se.net"
   },
+  "dependencies": {
+    "grafana-plugin-support": "0.3.0-alpha.3",
+    "@tippyjs/react": "^4.0.2"
+  },
   "devDependencies": {
     "@grafana/data": "latest",
     "@grafana/toolkit": "latest",
@@ -29,8 +33,5 @@
   },
   "engines": {
     "node": ">=14"
-  },
-  "dependencies": {
-    "grafana-plugin-support": "0.3.0-alpha.3"
   }
 }

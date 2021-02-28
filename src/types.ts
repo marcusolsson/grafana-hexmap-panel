@@ -12,7 +12,6 @@ export interface SimpleOptions {
 
 export interface StyledHex {
   shape: Cube;
-  // size: number;
   valueField: Field<number>;
   sizeField?: Field<number>;
   colorField: Field<number>;

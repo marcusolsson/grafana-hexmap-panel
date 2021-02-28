@@ -5,7 +5,8 @@ import { Hexagon } from './Hexagon';
 import { DataFrame, Field, getFieldDisplayName } from '@grafana/data';
 import { ContextMenu, MenuItemsGroup, MenuItem, useTheme } from '@grafana/ui';
 import { css } from 'emotion';
-import { fieldConfigWithMinMaxCompat, measureText } from 'grafana-plugin-support';
+import { fieldConfigWithMinMaxCompat, measureText, getFormattedDisplayValue } from 'grafana-plugin-support';
+import { Tooltip } from './Tooltip';
 
 interface Props {
   width: number;
@@ -136,31 +137,33 @@ export const HexagonGroup = React.memo(
             }
 
             return (
-              <g
-                key={k}
-                transform={`translate(${point.x + (optimized.rows > 1 ? 2 * optimized.r : optimized.r)}, ${
-                  point.y + optimized.R
-                })`}
-              >
-                {background ? (
-                  <Hexagon circumradius={optimized.R} color={'rgba(255,255,255,0.05)'} animate={false} />
-                ) : null}
-                <Hexagon
-                  onClick={(e) => {
-                    setContextMenuPos({ x: e.clientX, y: e.clientY });
-                    setShowContextMenu(true);
-                    setContextMenuLabel(
-                      <small>{`${getFieldDisplayName(_.valueField, _.frame)}: ${valueDisplay.text} ${
-                        valueDisplay.suffix ? valueDisplay.suffix : ''
-                      }`}</small>
-                    );
-                    setContextMenuGroups([{ label: valueField.name, items: valueLinks }]);
-                  }}
-                  circumradius={optimized.R * factor * (1 - padding)}
-                  color={colorDisplay.color!}
-                  animate={true}
-                />
-              </g>
+              <Tooltip content={<div>Value: {getFormattedDisplayValue(valueDisplay)}</div>}>
+                <g
+                  key={k}
+                  transform={`translate(${point.x + (optimized.rows > 1 ? 2 * optimized.r : optimized.r)}, ${
+                    point.y + optimized.R
+                  })`}
+                >
+                  {background ? (
+                    <Hexagon circumradius={optimized.R} color={'rgba(255,255,255,0.05)'} ignoreHover={false} />
+                  ) : null}
+                  <Hexagon
+                    onClick={(e) => {
+                      setContextMenuPos({ x: e.clientX, y: e.clientY });
+                      setShowContextMenu(true);
+                      setContextMenuLabel(
+                        <small>{`${getFieldDisplayName(_.valueField, _.frame)}: ${valueDisplay.text} ${
+                          valueDisplay.suffix ? valueDisplay.suffix : ''
+                        }`}</small>
+                      );
+                      setContextMenuGroups([{ label: valueField.name, items: valueLinks }]);
+                    }}
+                    circumradius={optimized.R * factor * (1 - padding)}
+                    color={colorDisplay.color!}
+                    ignoreHover={true}
+                  />
+                </g>
+              </Tooltip>
             );
           })}
         </g>
