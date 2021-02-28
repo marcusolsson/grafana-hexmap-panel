@@ -82,7 +82,7 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
         viewBox={`0 0 ${chartWidth} ${chartHeight}`}
       >
         <g transform={`translate(${margin}, ${margin})`}>
-          {guides ? (
+          {guides && (
             <rect
               width={chartWidth}
               height={chartHeight}
@@ -92,7 +92,8 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
                 stroke: #ffff00;
               `}
             />
-          ) : null}
+          )}
+
           {Object.entries(groupedData).map(([key, value], i) => {
             return (
               <g
@@ -100,7 +101,7 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
                 transform={`translate(${(i % numColumns) * subWidth}, ${Math.floor(i / numColumns) * subHeight})`}
               >
                 <HexagonGroup
-                  label={key}
+                  label={Object.keys(groupedData).length > 1 ? key : undefined}
                   padding={padding}
                   background={background}
                   width={subWidth}

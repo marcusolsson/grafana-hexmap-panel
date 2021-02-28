@@ -15,7 +15,7 @@ interface Props {
   width: number;
   height: number;
 
-  label: string;
+  label?: string;
   background: boolean;
   padding: number;
   guides: boolean;
@@ -39,7 +39,7 @@ export const HexagonGroup = React.memo(
 
     const theme = useTheme();
 
-    const labelHeight = 25;
+    const labelHeight = label ? 25 : 0;
 
     const margin = 10;
     const chartWidth = width - margin * 2;
@@ -71,7 +71,7 @@ export const HexagonGroup = React.memo(
 
     return (
       <g transform={`translate(${margin}, ${margin})`}>
-        {guides ? (
+        {guides && (
           <rect
             width={chartWidth}
             height={chartHeight}
@@ -81,18 +81,20 @@ export const HexagonGroup = React.memo(
               stroke: #00ff00;
             `}
           />
-        ) : null}
+        )}
 
-        <text
-          className={css`
-            fill: ${theme.colors.text};
-            font-size: ${theme.typography.size.lg};
-          `}
-          x={chartWidth / 2 - (measureText(label, theme.typography.size.lg)?.width ?? 0) / 2}
-          y={labelHeight - labelHeight / 4}
-        >
-          {label}
-        </text>
+        {label && (
+          <text
+            className={css`
+              fill: ${theme.colors.text};
+              font-size: ${theme.typography.size.lg};
+            `}
+            x={chartWidth / 2 - (measureText(label, theme.typography.size.lg)?.width ?? 0) / 2}
+            y={labelHeight - labelHeight / 4}
+          >
+            {label}
+          </text>
+        )}
 
         {showContextMenu && (
           <ContextMenu
@@ -104,7 +106,7 @@ export const HexagonGroup = React.memo(
         )}
 
         <g transform={`translate(0, ${labelHeight})`}>
-          {guides ? (
+          {guides && (
             <rect
               width={chartWidth}
               height={chartHeight - labelHeight}
@@ -114,7 +116,7 @@ export const HexagonGroup = React.memo(
                 stroke: #00ff00;
               `}
             />
-          ) : null}
+          )}
 
           {coords.map((coord, key) => {
             const axial = cube2Oddr(coord.shape);
