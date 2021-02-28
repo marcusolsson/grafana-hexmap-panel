@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { css } from 'emotion';
+
+import { Field } from '@grafana/data';
+import { ContextMenu, MenuItemsGroup, MenuItem, useTheme } from '@grafana/ui';
+
+import { fieldConfigWithMinMaxCompat, measureText } from 'grafana-plugin-support';
+
+import { Tooltip } from './Tooltip';
+import { Hexagon } from './Hexagon';
 import { axial2Pixel, cube2Oddr } from './math';
 import { StyledHex } from './types';
-import { Hexagon } from './Hexagon';
-import { DataFrame, Field, getFieldDisplayName } from '@grafana/data';
-import { ContextMenu, MenuItemsGroup, MenuItem, useTheme } from '@grafana/ui';
-import { css } from 'emotion';
-import { fieldConfigWithMinMaxCompat, measureText, getFormattedDisplayValue } from 'grafana-plugin-support';
-import { Tooltip } from './Tooltip';
 
 interface Props {
   width: number;
@@ -19,8 +22,6 @@ interface Props {
 
   indexes: number[];
 
-  frame: DataFrame;
-  valueField: Field<number>;
   colorField: Field<number>;
   sizeField?: Field<number>;
 }
@@ -30,10 +31,9 @@ const normalize = (size: number, min: number, max: number) => {
 };
 
 export const HexagonGroup = React.memo(
-  ({ padding, frame, width, height, background, valueField, sizeField, colorField, indexes, label, guides }: Props) => {
+  ({ padding, width, height, background, sizeField, colorField, indexes, label, guides }: Props) => {
     // State for context menu.
     const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
-    const [contextMenuLabel, setContextMenuLabel] = useState<React.ReactNode | string>('');
     const [contextMenuGroups, setContextMenuGroups] = useState<MenuItemsGroup[]>([]);
     const [showContextMenu, setShowContextMenu] = useState(false);
 
@@ -45,9 +45,9 @@ export const HexagonGroup = React.memo(
     const chartWidth = width - margin * 2;
     const chartHeight = height - margin * 2;
 
-    const optimized = optimize(chartWidth, chartHeight - labelHeight, indexes.length);
+    const layout = optimizeLayout(chartWidth, chartHeight - labelHeight, indexes.length);
 
-    if (!optimized) {
+    if (!layout) {
       return (
         <text
           className={css`
@@ -55,22 +55,18 @@ export const HexagonGroup = React.memo(
             font-size: ${theme.typography.size.lg};
           `}
         >
-          Unable to display
+          {`Unable to layout hexagons`}
         </text>
       );
     }
 
     const coords: StyledHex[] = indexes.map((valueRowIndex, i) => ({
-      shape: {
-        x: i % optimized.cols,
-        y: 0,
-        z: Math.floor(i / optimized.cols),
-      },
-      valueField,
-      sizeField,
-      colorField,
-      frame,
       valueRowIndex,
+      shape: {
+        x: i % layout.cols,
+        y: 0,
+        z: Math.floor(i / layout.cols),
+      },
     }));
 
     return (
@@ -97,9 +93,16 @@ export const HexagonGroup = React.memo(
         >
           {label}
         </text>
-        {showContextMenu
-          ? renderContextMenu(contextMenuPos, contextMenuLabel, contextMenuGroups, () => setShowContextMenu(false))
-          : null}
+
+        {showContextMenu && (
+          <ContextMenu
+            x={contextMenuPos.x}
+            y={contextMenuPos.y}
+            onClose={() => setShowContextMenu(false)}
+            items={contextMenuGroups}
+          />
+        )}
+
         <g transform={`translate(0, ${labelHeight})`}>
           {guides ? (
             <rect
@@ -113,52 +116,53 @@ export const HexagonGroup = React.memo(
             />
           ) : null}
 
-          {coords.map((_, k) => {
-            const axial = cube2Oddr(_.shape);
-            const point = axial2Pixel(axial, optimized.R);
+          {coords.map((coord, key) => {
+            const axial = cube2Oddr(coord.shape);
+            const point = axial2Pixel(axial, layout.R);
 
-            const valueDisplay = _.valueField.display!(_.valueField.values.get(_.valueRowIndex));
-            const colorDisplay = _.colorField.display!(_.colorField.values.get(_.valueRowIndex));
-
-            const valueLinks = _.valueField.getLinks!({ valueRowIndex: _.valueRowIndex }).map<MenuItem>((link) => {
-              return {
-                label: link.title,
-                url: link.href,
-                target: link.target,
-                icon: link.target === '_self' ? 'link' : 'external-link-alt',
-                onClick: link.onClick,
-              };
-            });
+            const colorDisplay = colorField.display!(colorField.values.get(coord.valueRowIndex));
 
             let factor = 1;
             if (sizeField) {
               const config = fieldConfigWithMinMaxCompat(sizeField);
-              factor = normalize(sizeField.values.get(_.valueRowIndex), config.min!, config.max!);
+              factor = normalize(sizeField.values.get(coord.valueRowIndex), config.min!, config.max!);
             }
 
             return (
-              <Tooltip content={<div>Value: {getFormattedDisplayValue(valueDisplay)}</div>}>
+              <Tooltip key={key} content={<div></div>}>
                 <g
-                  key={k}
-                  transform={`translate(${point.x + (optimized.rows > 1 ? 2 * optimized.r : optimized.r)}, ${
-                    point.y + optimized.R
+                  transform={`translate(${point.x + (layout.rows > 1 ? 2 * layout.r : layout.r)}, ${
+                    point.y + layout.R
                   })`}
                 >
-                  {background ? (
-                    <Hexagon circumradius={optimized.R} color={'rgba(255,255,255,0.05)'} ignoreHover={false} />
-                  ) : null}
+                  {background && (
+                    <Hexagon circumradius={layout.R} color={'rgba(255,255,255,0.05)'} ignoreHover={false} />
+                  )}
                   <Hexagon
                     onClick={(e) => {
                       setContextMenuPos({ x: e.clientX, y: e.clientY });
                       setShowContextMenu(true);
-                      setContextMenuLabel(
-                        <small>{`${getFieldDisplayName(_.valueField, _.frame)}: ${valueDisplay.text} ${
-                          valueDisplay.suffix ? valueDisplay.suffix : ''
-                        }`}</small>
+                      setContextMenuGroups(
+                        [
+                          { label: 'Color', field: colorField },
+                          { label: 'Size', field: sizeField },
+                        ]
+                          .filter((_) => _.field)
+                          .map<MenuItemsGroup>(({ label, field }) => ({
+                            label,
+                            items: field!.getLinks!({ valueRowIndex: coord.valueRowIndex }).map<MenuItem>((link) => {
+                              return {
+                                label: link.title,
+                                url: link.href,
+                                target: link.target,
+                                icon: link.target === '_self' ? 'link' : 'external-link-alt',
+                                onClick: link.onClick,
+                              };
+                            }),
+                          }))
                       );
-                      setContextMenuGroups([{ label: valueField.name, items: valueLinks }]);
                     }}
-                    circumradius={optimized.R * factor * (1 - padding)}
+                    circumradius={layout.R * factor * (1 - padding)}
                     color={colorDisplay.color!}
                     ignoreHover={true}
                   />
@@ -172,7 +176,7 @@ export const HexagonGroup = React.memo(
   }
 );
 
-const optimize = (
+const optimizeLayout = (
   w: number,
   h: number,
   N: number
@@ -208,21 +212,4 @@ const hexesFit = (
   }
 
   return { valid: N <= rows * cols, rows, cols, R };
-};
-
-const renderContextMenu = (
-  pos: { x: number; y: number },
-  label: React.ReactNode | string,
-  items: MenuItemsGroup[],
-  onClose: () => void
-) => {
-  const contextContentProps = {
-    x: pos.x,
-    y: pos.y,
-    onClose,
-    items,
-    renderHeader: () => label,
-  };
-
-  return <ContextMenu {...contextContentProps} />;
 };

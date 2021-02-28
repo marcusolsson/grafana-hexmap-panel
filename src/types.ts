@@ -1,5 +1,3 @@
-import { DataFrame, Field } from '@grafana/data';
-
 export interface SimpleOptions {
   padding: number;
   background: boolean;
@@ -12,10 +10,6 @@ export interface SimpleOptions {
 
 export interface StyledHex {
   shape: Cube;
-  valueField: Field<number>;
-  sizeField?: Field<number>;
-  colorField: Field<number>;
-  frame: DataFrame;
   valueRowIndex: number;
 }
 

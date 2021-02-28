@@ -1,11 +1,13 @@
 import React from 'react';
-import { FieldType, PanelProps } from '@grafana/data';
-import { SimpleOptions } from 'types';
 import { css, cx } from 'emotion';
+
+import { Field, FieldType, PanelProps } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 
-import { HexagonGroup } from './HexagonGroup';
 import { PanelWizard } from 'grafana-plugin-support';
+
+import { HexagonGroup } from './HexagonGroup';
+import { SimpleOptions } from './types';
 
 type Group = {
   [value: string]: { indexes: number[]; next?: Group };
@@ -16,12 +18,14 @@ const usage = {
   url: 'https://github.com/marcusolsson/grafana-hexmap-panel',
 };
 
-interface Props extends PanelProps<SimpleOptions> {}
+type Props = PanelProps<SimpleOptions>;
 
-export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) => {
+export const HexmapPanel = ({ options, data, width, height }: Props) => {
   const { padding, background, guides } = options;
 
-  const { valueFieldName, sizeByField, colorByField, groupByField } = options;
+  const styles = getStyles();
+
+  const { sizeByField, colorByField, groupByField } = options;
 
   if (data.series.length === 0) {
     return <PanelWizard {...usage} />;
@@ -29,67 +33,35 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const frame = data.series[0];
 
-  const valueField = valueFieldName
-    ? frame.fields.find((f) => f.name === valueFieldName)
+  const sizeField = frame.fields.find((f) => f.name === sizeByField);
+
+  const colorField = colorByField
+    ? frame.fields.find((f) => f.name === colorByField)
     : frame.fields.find((f) => f.type === FieldType.number);
 
-  if (!valueField) {
+  if (!colorField) {
     return <PanelWizard {...usage} fields={frame.fields} />;
   }
 
-  const sizeField = frame.fields.find((f) => f.name === sizeByField);
-  const colorField = frame.fields.find((f) => f.name === colorByField) ?? valueField;
+  const groupedField = frame.fields.find((f) => f.name === groupByField);
 
   const margin = 0;
 
   const chartWidth = width - margin * 2;
   const chartHeight = height - margin * 2;
 
-  let groupedData: Group = {};
-  if (groupByField) {
-    const groupedField = frame.fields.find((f) => f.name === groupByField);
-
-    const init: Group = {};
-    groupedData = groupedField!.values
-      .toArray()
-      .map((value, index) => ({ value, index }))
-      .map((_) => {
-        return _;
-      })
-      .reduce((acc: Group, curr: { value: string; index: number }) => {
-        if (!acc[curr.value]) {
-          acc[curr.value] = {
-            indexes: [],
-          };
-        }
-        acc[curr.value].indexes.push(curr.index);
-        return acc;
-      }, init);
-  } else {
-    groupedData = {
-      All: {
-        indexes: Array.from({ length: frame.length }).map((_, i) => i),
-      },
-    };
-  }
-
-  const numGroups = Object.keys(groupedData).length;
+  let groupedData = groupedField
+    ? groupData(groupedField)
+    : { All: { indexes: Array.from({ length: frame.length }).map((_, i) => i) } };
 
   const aspectRatio = chartWidth / chartHeight;
 
-  let numColumns = 0;
-  if (aspectRatio < 0.5) {
-    numColumns = 1;
-  } else {
-    numColumns = Math.min(Math.ceil(aspectRatio) + 1, numGroups);
-  }
-
+  const numGroups = Object.keys(groupedData).length;
+  const numColumns = aspectRatio < 0.5 ? 1 : Math.min(Math.ceil(aspectRatio) + 1, numGroups);
   const numRows = Math.ceil(numGroups / numColumns);
 
   let subWidth = chartWidth / numColumns;
   let subHeight = chartHeight / numRows;
-
-  const styles = getStyles();
 
   return (
     <div
@@ -121,30 +93,26 @@ export const HexmapPanel: React.FC<Props> = ({ options, data, width, height }) =
               `}
             />
           ) : null}
-          {groupedData
-            ? Object.entries(groupedData).map(([key, value], i) => {
-                return (
-                  <g
-                    key={i}
-                    transform={`translate(${(i % numColumns) * subWidth}, ${Math.floor(i / numColumns) * subHeight})`}
-                  >
-                    <HexagonGroup
-                      label={key}
-                      padding={padding}
-                      frame={data.series[0]}
-                      background={background}
-                      width={subWidth}
-                      height={subHeight}
-                      valueField={valueField}
-                      colorField={colorField}
-                      sizeField={sizeField}
-                      indexes={value.indexes}
-                      guides={guides}
-                    />
-                  </g>
-                );
-              })
-            : null}
+          {Object.entries(groupedData).map(([key, value], i) => {
+            return (
+              <g
+                key={i}
+                transform={`translate(${(i % numColumns) * subWidth}, ${Math.floor(i / numColumns) * subHeight})`}
+              >
+                <HexagonGroup
+                  label={key}
+                  padding={padding}
+                  background={background}
+                  width={subWidth}
+                  height={subHeight}
+                  colorField={colorField}
+                  sizeField={sizeField}
+                  indexes={value.indexes}
+                  guides={guides}
+                />
+              </g>
+            );
+          })}
         </g>
       </svg>
     </div>
@@ -169,3 +137,18 @@ const getStyles = stylesFactory(() => {
     `,
   };
 });
+
+const groupData = (field: Field): Group => {
+  return field.values
+    .toArray()
+    .map((value, index) => ({ value, index }))
+    .reduce<Group>((acc, curr) => {
+      if (!acc[curr.value]) {
+        acc[curr.value] = {
+          indexes: [],
+        };
+      }
+      acc[curr.value].indexes.push(curr.index);
+      return acc;
+    }, {});
+};

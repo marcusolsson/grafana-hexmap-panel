@@ -8,21 +8,11 @@ export const plugin = getPanelPluginOrFallback(
   new PanelPlugin<SimpleOptions>(HexmapPanel).useFieldConfig().setPanelOptions((builder) => {
     return builder
       .addCustomEditor({
-        id: 'valueFieldName',
-        path: 'valueFieldName',
-        name: 'Value',
-        description: 'Defaults to the first numeric field.',
-        category: ['Dimensions'],
-        editor: FieldSelectEditor,
-        settings: {
-          filterByType: [FieldType.number],
-        },
-      })
-      .addCustomEditor({
         id: 'colorByField',
         path: 'colorByField',
         name: 'Color by',
-        description: 'Field to use for color. Defaults to the value field. Set the color scheme under the Fields tab.',
+        description:
+          'Field to use for color. Defaults to the first number field. Set the color scheme under the Fields tab.',
         editor: FieldSelectEditor,
         category: ['Dimensions'],
         settings: {
