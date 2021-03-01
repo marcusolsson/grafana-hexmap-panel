@@ -12,7 +12,7 @@ export const plugin = getPanelPluginOrFallback(
         path: 'colorByField',
         name: 'Color by',
         description:
-          'Field to use for color. Defaults to the first number field. Set the color scheme under the Fields tab.',
+          'Field to use for color. Defaults to the first number field. You can set the color scheme under the Field tab.',
         editor: FieldSelectEditor,
         category: ['Dimensions'],
         settings: {
@@ -39,9 +39,9 @@ export const plugin = getPanelPluginOrFallback(
         category: ['Dimensions'],
       })
       .addCustomEditor({
-        id: 'labelFields',
-        path: 'labelFields',
-        name: 'Additional labels',
+        id: 'labelByFields',
+        path: 'labelByFields',
+        name: 'Labels',
         description: 'Fields to use as labels in the tooltip.',
         category: ['Dimensions'],
         editor: FieldSelectEditor,

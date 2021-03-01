@@ -12,10 +12,16 @@ interface Props {
   content: React.ReactNode;
   children: React.ReactElement<any>;
   followMouse?: boolean;
+  disable?: boolean;
 }
 
-export const Tooltip = ({ content, children, followMouse }: Props) => {
+export const Tooltip = ({ content, children, followMouse, disable }: Props) => {
   const theme = useTheme();
+
+  if (disable) {
+    return children;
+  }
+
   const styles = {
     root: css`
       max-width: 500px;

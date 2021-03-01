@@ -52,13 +52,13 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
   const chartWidth = width - margin * 2;
   const chartHeight = height - margin * 2;
 
-  let groupedData = groupedField
-    ? groupData(groupedField)
+  let indexGroups = groupedField
+    ? groupRowIndexes(groupedField)
     : { All: { indexes: Array.from({ length: frame.length }).map((_, i) => i) } };
 
   const aspectRatio = chartWidth / chartHeight;
 
-  const numGroups = Object.keys(groupedData).length;
+  const numGroups = Object.keys(indexGroups).length;
   const numColumns = aspectRatio < 0.5 ? 1 : Math.min(Math.ceil(aspectRatio) + 1, numGroups);
   const numRows = Math.ceil(numGroups / numColumns);
 
@@ -96,14 +96,14 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
             />
           )}
 
-          {Object.entries(groupedData).map(([key, value], i) => {
+          {Object.entries(indexGroups).map(([key, value], i) => {
             return (
               <g
                 key={i}
                 transform={`translate(${(i % numColumns) * subWidth}, ${Math.floor(i / numColumns) * subHeight})`}
               >
                 <HexagonGroup
-                  label={Object.keys(groupedData).length > 1 ? key : undefined}
+                  label={Object.keys(indexGroups).length > 1 ? key : undefined}
                   padding={padding}
                   background={background}
                   width={subWidth}
@@ -142,7 +142,7 @@ const getStyles = stylesFactory(() => {
   };
 });
 
-const groupData = (field: Field): Group => {
+const groupRowIndexes = (field: Field): Group => {
   return field.values
     .toArray()
     .map((value, index) => ({ value, index }))

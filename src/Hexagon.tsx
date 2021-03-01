@@ -5,11 +5,11 @@ import { css, cx } from 'emotion';
 interface Props {
   circumradius: number;
   color: string;
-  ignoreHover: boolean;
+  hover: boolean;
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export const Hexagon = React.memo(({ onClick, circumradius, color, ignoreHover }: Props) => {
+export const Hexagon = React.memo(({ onClick, circumradius, color, hover }: Props) => {
   const R = circumradius; // Circumradius
   const deg60 = Math.PI / 3;
   const deg30 = Math.PI / 6;
@@ -41,7 +41,7 @@ export const Hexagon = React.memo(({ onClick, circumradius, color, ignoreHover }
         css`
           fill: ${color};
         `,
-        { [hoverStyle]: ignoreHover }
+        { [hoverStyle]: hover }
       )}
       onClick={(e) => {
         if (onClick) {

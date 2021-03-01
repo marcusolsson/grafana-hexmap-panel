@@ -27,10 +27,12 @@ interface Props {
   labelFields?: Field[];
 }
 
-const normalize = (size: number, min: number, max: number) => {
-  return (size - min) / (max - min);
-};
-
+/**
+ * HexagonGroup renders a honeycomb pattern of hexagons.
+ *
+ * The hexagons to render are given by an array of indexes from the original
+ * data frame.
+ */
 export const HexagonGroup = React.memo(
   ({ padding, width, height, background, sizeField, colorField, labelFields, indexes, label, guides }: Props) => {
     // State for context menu.
@@ -56,11 +58,12 @@ export const HexagonGroup = React.memo(
             font-size: ${theme.typography.size.lg};
           `}
         >
-          {`Unable to layout hexagons`}
+          {`Unable to create layout`}
         </text>
       );
     }
 
+    // Create hexagons coordinates in cubic space
     const coords: StyledHex[] = indexes.map((valueRowIndex, i) => ({
       valueRowIndex,
       shape: {
@@ -125,35 +128,40 @@ export const HexagonGroup = React.memo(
 
             const colorDisplay = colorField.display!(colorField.values.get(coord.valueRowIndex));
 
-            let factor = 1;
+            let sizeFactor = 1;
             if (sizeField) {
               const config = fieldConfigWithMinMaxCompat(sizeField);
-              factor = normalize(sizeField.values.get(coord.valueRowIndex), config.min!, config.max!);
+              sizeFactor = normalize(sizeField.values.get(coord.valueRowIndex), config.min!, config.max!);
             }
+
+            const labels = (labelFields ?? [])
+              .map((field) => field.values.get(coord.valueRowIndex))
+              .filter((_) => _ !== null) // Filter null values
+              .map((value) => value.toString())
+              .filter((_) => _); // Filter empty strings
 
             return (
               <Tooltip
                 key={key}
+                disable={labels.length === 0}
                 content={
-                  <div>
-                    {(labelFields ?? [])
-                      .map((field) => field.values.get(coord.valueRowIndex).toString())
-                      .filter((label) => label)
-                      .map((label) => (
-                        <Badge
-                          color={'blue'}
-                          text={label}
-                          className={css`
-                            margin-right: ${theme.spacing.xs};
-                            &:last-child {
-                              margin-right: 0;
-                            }
-                            overflow: hidden;
-                            max-width: 100%;
-                          `}
-                        />
-                      ))}
-                  </div>
+                  <>
+                    {labels.map((label, key) => (
+                      <Badge
+                        key={key}
+                        color={'blue'}
+                        text={label}
+                        className={css`
+                          margin-right: ${theme.spacing.xs};
+                          &:last-child {
+                            margin-right: 0;
+                          }
+                          overflow: hidden;
+                          max-width: 100%;
+                        `}
+                      />
+                    ))}
+                  </>
                 }
               >
                 <g
@@ -161,9 +169,8 @@ export const HexagonGroup = React.memo(
                     point.y + layout.R
                   })`}
                 >
-                  {background && (
-                    <Hexagon circumradius={layout.R} color={'rgba(255,255,255,0.05)'} ignoreHover={false} />
-                  )}
+                  {background && <Hexagon circumradius={layout.R} color={'rgba(255,255,255,0.05)'} hover={false} />}
+
                   <Hexagon
                     onClick={(e) => {
                       setContextMenuPos({ x: e.clientX, y: e.clientY });
@@ -188,9 +195,9 @@ export const HexagonGroup = React.memo(
                           }))
                       );
                     }}
-                    circumradius={layout.R * factor * (1 - padding)}
+                    circumradius={layout.R * sizeFactor * (1 - padding)}
                     color={colorDisplay.color!}
-                    ignoreHover={true}
+                    hover={true}
                   />
                 </g>
               </Tooltip>
@@ -202,6 +209,14 @@ export const HexagonGroup = React.memo(
   }
 );
 
+/**
+ * optimizeLayout attempts to maximize the size of each hexagon within a
+ * rectangle.
+ *
+ * @param w Available width in pixels
+ * @param h Available height in pixels
+ * @param N Number of hexagons to fit
+ */
 const optimizeLayout = (
   w: number,
   h: number,
@@ -218,6 +233,10 @@ const optimizeLayout = (
   return best;
 };
 
+/**
+ * hexesFit checks whether a number N of hexagons fit in a rectangle with the
+ * given radius.
+ */
 const hexesFit = (
   r: number,
   w: number,
@@ -238,4 +257,8 @@ const hexesFit = (
   }
 
   return { valid: N <= rows * cols, rows, cols, R };
+};
+
+const normalize = (size: number, min: number, max: number) => {
+  return (size - min) / (max - min);
 };
