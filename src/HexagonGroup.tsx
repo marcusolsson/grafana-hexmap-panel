@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { css } from 'emotion';
 
 import { Field } from '@grafana/data';
-import { ContextMenu, MenuItemsGroup, MenuItem, useTheme } from '@grafana/ui';
+import { ContextMenu, MenuItemsGroup, MenuItem, useTheme, Badge } from '@grafana/ui';
 
 import { fieldConfigWithMinMaxCompat, measureText } from 'grafana-plugin-support';
 
@@ -24,6 +24,7 @@ interface Props {
 
   colorField: Field<number>;
   sizeField?: Field<number>;
+  labelFields?: Field[];
 }
 
 const normalize = (size: number, min: number, max: number) => {
@@ -31,7 +32,7 @@ const normalize = (size: number, min: number, max: number) => {
 };
 
 export const HexagonGroup = React.memo(
-  ({ padding, width, height, background, sizeField, colorField, indexes, label, guides }: Props) => {
+  ({ padding, width, height, background, sizeField, colorField, labelFields, indexes, label, guides }: Props) => {
     // State for context menu.
     const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
     const [contextMenuGroups, setContextMenuGroups] = useState<MenuItemsGroup[]>([]);
@@ -131,7 +132,30 @@ export const HexagonGroup = React.memo(
             }
 
             return (
-              <Tooltip key={key} content={<div></div>}>
+              <Tooltip
+                key={key}
+                content={
+                  <div>
+                    {(labelFields ?? [])
+                      .map((field) => field.values.get(coord.valueRowIndex).toString())
+                      .filter((label) => label)
+                      .map((label) => (
+                        <Badge
+                          color={'blue'}
+                          text={label}
+                          className={css`
+                            margin-right: ${theme.spacing.xs};
+                            &:last-child {
+                              margin-right: 0;
+                            }
+                            overflow: hidden;
+                            max-width: 100%;
+                          `}
+                        />
+                      ))}
+                  </div>
+                }
+              >
                 <g
                   transform={`translate(${point.x + (layout.rows > 1 ? 2 * layout.r : layout.r)}, ${
                     point.y + layout.R

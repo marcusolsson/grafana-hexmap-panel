@@ -5,6 +5,7 @@ export interface SimpleOptions {
   sizeByField?: string;
   colorByField?: string;
   groupByField?: string;
+  labelByFields: string[];
   guides: boolean;
 }
 

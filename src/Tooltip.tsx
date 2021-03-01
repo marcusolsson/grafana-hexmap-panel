@@ -18,6 +18,7 @@ export const Tooltip = ({ content, children, followMouse }: Props) => {
   const theme = useTheme();
   const styles = {
     root: css`
+      max-width: 500px;
       border-radius: ${theme.border.radius.md};
       background-color: ${theme.colors.bg2};
       padding: ${theme.spacing.sm};
@@ -32,6 +33,7 @@ export const Tooltip = ({ content, children, followMouse }: Props) => {
       plugins={[followCursor]}
       animation={false}
       className={styles.root}
+      placement="bottom"
     >
       {children}
     </Tippy>

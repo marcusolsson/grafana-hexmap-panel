@@ -25,7 +25,7 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
 
   const styles = getStyles();
 
-  const { sizeByField, colorByField, groupByField } = options;
+  const { sizeByField, colorByField, groupByField, labelByFields } = options;
 
   if (data.series.length === 0) {
     return <PanelWizard {...usage} />;
@@ -42,6 +42,8 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
   if (!colorField) {
     return <PanelWizard {...usage} fields={frame.fields} />;
   }
+
+  const labelFields = frame.fields.filter((frame) => labelByFields?.includes(frame.name));
 
   const groupedField = frame.fields.find((f) => f.name === groupByField);
 
@@ -110,6 +112,7 @@ export const HexmapPanel = ({ options, data, width, height }: Props) => {
                   sizeField={sizeField}
                   indexes={value.indexes}
                   guides={guides}
+                  labelFields={labelFields}
                 />
               </g>
             );
