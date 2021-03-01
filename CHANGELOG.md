@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2021-03-01)
+
+### Enhancements
+
+- Hide group label when there's only one group ([#2](https://github.com/marcusolsson/grafana-hexmap-panel/issues/2))
+- Add Labels option to add extra information to the tooltip ([#2](https://github.com/marcusolsson/grafana-hexmap-panel/issues/2))
+- Remove the Value dimension. The only real use for the value dimension was to display a metric in the tooltip. The Labels dimension is more versatile.
+
 ## 0.2.0 (2021-02-17)
 
 ### Enhancements
