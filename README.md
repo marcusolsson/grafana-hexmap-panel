@@ -21,7 +21,6 @@ This section lists the available configuration options.
 
 | Option | Description |
 |--------|-------------|
-| _Value_ | Defaults to the first numeric field. |
 | _Color by_ | Field to use for color. Defaults to the first number field. You can set the color scheme under the Fields tab. |
 | _Size by_ | Field to use for size. If empty, all hexagons will be the same size. |
 | _Group by_ | Field to group by. |
