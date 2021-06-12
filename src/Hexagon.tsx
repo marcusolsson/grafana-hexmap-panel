@@ -1,6 +1,5 @@
-import React from 'react';
-
 import { css, cx } from 'emotion';
+import React from 'react';
 
 interface Props {
   circumradius: number;

@@ -1,4 +1,4 @@
-import { Hex, Point, Cube } from './types';
+import { Cube, Hex, Point } from './types';
 
 export const axial2Pixel = (hex: Hex, size: number): Point => {
   const x = size * (Math.sqrt(3) * hex.col + (Math.sqrt(3) / 2) * hex.row);

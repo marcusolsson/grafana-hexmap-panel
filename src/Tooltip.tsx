@@ -1,11 +1,7 @@
-import React from 'react';
-
 import { useTheme } from '@grafana/ui';
-
-import { css } from 'emotion';
-
-// Tippy
 import Tippy from '@tippyjs/react';
+import { css } from 'emotion';
+import React from 'react';
 import { followCursor } from 'tippy.js';
 
 interface Props {

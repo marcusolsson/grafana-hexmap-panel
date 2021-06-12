@@ -1,7 +1,7 @@
 import { FieldType, PanelPlugin } from '@grafana/data';
-import { SimpleOptions } from './types';
-import { HexmapPanel } from './HexmapPanel';
 import { FieldSelectEditor, getPanelPluginOrFallback } from 'grafana-plugin-support';
+import { HexmapPanel } from './HexmapPanel';
+import { SimpleOptions } from './types';
 
 export const plugin = getPanelPluginOrFallback(
   'marcusolsson-hexmap-panel',

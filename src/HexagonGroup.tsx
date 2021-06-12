@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { css } from 'emotion';
-
 import { Field } from '@grafana/data';
-import { ContextMenu, MenuItemsGroup, MenuItem, useTheme, Badge } from '@grafana/ui';
-
+import { Badge, ContextMenu, MenuItem, MenuItemsGroup, useTheme } from '@grafana/ui';
+import { css } from 'emotion';
 import { fieldConfigWithMinMaxCompat, measureText } from 'grafana-plugin-support';
-
-import { Tooltip } from './Tooltip';
+import React, { useState } from 'react';
 import { Hexagon } from './Hexagon';
 import { axial2Pixel, cube2Oddr } from './math';
+import { Tooltip } from './Tooltip';
 import { StyledHex } from './types';
 
 interface Props {

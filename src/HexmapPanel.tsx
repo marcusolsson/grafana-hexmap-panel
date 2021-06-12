@@ -1,11 +1,8 @@
-import React from 'react';
-import { css, cx } from 'emotion';
-
 import { Field, FieldType, PanelProps } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
-
+import { css, cx } from 'emotion';
 import { PanelWizard } from 'grafana-plugin-support';
-
+import React from 'react';
 import { HexagonGroup } from './HexagonGroup';
 import { SimpleOptions } from './types';
 
