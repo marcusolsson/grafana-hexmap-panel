@@ -1,9 +1,10 @@
 {
+  "$schema": "https://github.com/grafana/grafana/raw/main/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
   "name": "Hexmap",
   "id": "marcusolsson-hexmap-panel",
   "info": {
-    "description": "Panel for hexagonal tiling of data",
+    "description": "Hexagonal tiling of data",
     "author": {
       "name": "Marcus Olsson",
       "url": "https://github.com/marcusolsson"
