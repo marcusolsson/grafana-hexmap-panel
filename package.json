@@ -22,7 +22,7 @@
     "url": "https://marcus.se.net"
   },
   "dependencies": {
-    "grafana-plugin-support": "0.3.0-alpha.4",
+    "grafana-plugin-support": "0.4.0",
     "@tippyjs/react": "^4.0.2"
   },
   "devDependencies": {
