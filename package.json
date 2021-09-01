@@ -22,8 +22,8 @@
     "url": "https://marcus.se.net"
   },
   "dependencies": {
-    "grafana-plugin-support": "0.4.0",
-    "@tippyjs/react": "^4.0.2"
+    "@tippyjs/react": "^4.0.2",
+    "grafana-plugin-support": "0.4.0"
   },
   "devDependencies": {
     "@grafana/data": "7.5.7",
