@@ -26,9 +26,10 @@
     "grafana-plugin-support": "0.4.0"
   },
   "devDependencies": {
-    "@grafana/data": "7.5.7",
-    "@grafana/toolkit": "7.5.7",
-    "@grafana/ui": "7.5.7",
+    "@grafana/runtime": "8.1.1",
+    "@grafana/data": "8.1.1",
+    "@grafana/toolkit": "8.1.1",
+    "@grafana/ui": "8.1.1",
     "emotion": "10.0.27"
   },
   "engines": {

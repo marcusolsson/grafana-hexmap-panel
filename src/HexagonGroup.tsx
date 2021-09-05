@@ -1,8 +1,9 @@
 import { Field } from '@grafana/data';
-import { Badge, ContextMenu, MenuItem, MenuItemsGroup, useTheme } from '@grafana/ui';
+import { Badge, useTheme } from '@grafana/ui';
 import { css } from 'emotion';
 import { fieldConfigWithMinMaxCompat, measureText } from 'grafana-plugin-support';
 import React, { useState } from 'react';
+import { ContextMenu, MenuGroup } from './ContextMenu';
 import { Hexagon } from './Hexagon';
 import { axial2Pixel, cube2Oddr } from './math';
 import { Tooltip } from './Tooltip';
@@ -34,7 +35,7 @@ export const HexagonGroup = React.memo(
   ({ padding, width, height, background, sizeField, colorField, labelFields, indexes, label, guides }: Props) => {
     // State for context menu.
     const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 });
-    const [contextMenuGroups, setContextMenuGroups] = useState<MenuItemsGroup[]>([]);
+    const [contextMenuGroups, setContextMenuGroups] = useState<MenuGroup[]>([]);
     const [showContextMenu, setShowContextMenu] = useState(false);
 
     const theme = useTheme();
@@ -102,7 +103,7 @@ export const HexagonGroup = React.memo(
             x={contextMenuPos.x}
             y={contextMenuPos.y}
             onClose={() => setShowContextMenu(false)}
-            items={contextMenuGroups}
+            renderMenuItems={() => contextMenuGroups}
           />
         )}
 
@@ -178,11 +179,12 @@ export const HexagonGroup = React.memo(
                           { label: 'Size', field: sizeField },
                         ]
                           .filter((_) => _.field)
-                          .map<MenuItemsGroup>(({ label, field }) => ({
+                          .map<MenuGroup>(({ label, field }) => ({
                             label,
-                            items: field!.getLinks!({ valueRowIndex: coord.valueRowIndex }).map<MenuItem>((link) => {
+                            items: field!.getLinks!({ valueRowIndex: coord.valueRowIndex }).map((link) => {
                               return {
                                 label: link.title,
+                                ariaLabel: link.title,
                                 url: link.href,
                                 target: link.target,
                                 icon: link.target === '_self' ? 'link' : 'external-link-alt',

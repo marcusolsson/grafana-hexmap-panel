@@ -21,7 +21,7 @@ export const Tooltip = ({ content, children, followMouse, disable }: Props) => {
   const styles = {
     root: css`
       max-width: 500px;
-      border-radius: ${theme.border.radius.md};
+      border-radius: ${theme.border.radius.sm};
       background-color: ${theme.colors.bg2};
       padding: ${theme.spacing.sm};
       box-shadow: 0px 0px 20px ${theme.colors.dropdownShadow};
