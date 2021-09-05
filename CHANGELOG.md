@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 (2021-09-05)
+
+### Bug fixes
+
+- Fix Data Links for Grafana 8.0
+
 ## 0.3.0 (2021-03-01)
 
 ### Enhancements
