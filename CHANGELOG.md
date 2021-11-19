@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.2 (2021-11-19)
+
+### Enhancements
+
+- Upgrade dependencies
+
 ## 0.3.1 (2021-09-05)
 
 ### Bug fixes
