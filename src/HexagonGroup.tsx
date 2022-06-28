@@ -207,6 +207,7 @@ export const HexagonGroup = React.memo(
     );
   }
 );
+HexagonGroup.displayName = 'HexagonGroup';
 
 /**
  * optimizeLayout attempts to maximize the size of each hexagon within a

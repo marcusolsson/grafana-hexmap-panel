@@ -6,16 +6,13 @@
 [![Downloads](https://img.shields.io/badge/dynamic/json?logo=grafana&color=F47A20&label=downloads&query=%24.items%5B%3F%28%40.slug%20%3D%3D%20%22marcusolsson-hexmap-panel%22%29%5D.downloads&url=https%3A%2F%2Fgrafana.com%2Fapi%2Fplugins)](https://grafana.com/grafana/plugins/marcusolsson-hexmap-panel)
 [![License](https://img.shields.io/github/license/marcusolsson/grafana-hexmap-panel)](LICENSE)
 [![Twitter](https://img.shields.io/twitter/follow/marcusolsson?color=%231DA1F2&label=twitter&style=plastic)](https://twitter.com/marcusolsson)
+![Maintenance](https://img.shields.io/maintenance/no/2022?style=plastic)
+
+> **Important:** As of July 2022, I'm no longer actively maintaining this plugin. If this plugin has been useful to you, consider switching to the [Polystat](https://grafana.com/grafana/plugins/grafana-polystat-panel/) panel.
 
 A [Grafana](https://grafana.com) panel plugin for hexagonal tiling of data.
 
 ![Screenshot](https://github.com/marcusolsson/grafana-hexmap-panel/raw/main/src/img/screenshot.png)
-
-## Maintenance
-
-I maintain [several plugins](https://marcus.se.net/projects/) for Grafana. While my employer allows me to spend some time on developing plugins, most of the work happens on evenings and weekends. At the moment, I'm prioritizing fixing bugs and reviewing PRs over introducing new features.
-
-If you'd still like to propose a new feature, [create a new Discussion](https://github.com/marcusolsson/grafana-hexmap-panel/discussions/new?category=ideas). While I likely won't be able to work on features myself, I'd be happy to accept pull requests. If you'd like to contribute a feature, please let me know before you start working on it.
 
 ## Configuration
 
